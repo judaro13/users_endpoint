@@ -8,7 +8,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
-	"github.com/judaro13/phoenix/publisher"
+	"github.com/judaro13/users_enpoint/publisher"
 )
 
 type User struct {
