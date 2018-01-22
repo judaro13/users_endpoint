@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -80,7 +79,6 @@ func CreateUserEndpoint(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Println("********************")
 	serr := publisher.SendMessage(string(jsonUser))
 	if ReturnWithError(w, serr, http.StatusInternalServerError) {
 		return
@@ -90,7 +88,6 @@ func CreateUserEndpoint(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fmt.Println("####################")
 	router := mux.NewRouter()
 	router.HandleFunc("/users", CreateUserEndpoint).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8000", router))
