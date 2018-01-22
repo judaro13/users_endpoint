@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
-	// "encoding/json"
+	// "fmt"
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"log"
@@ -61,22 +61,24 @@ func CreateUserEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 
 	decoder := schema.NewDecoder()
-// r.PostForm is a map of our POST form values
 	user := new(User)
 	derr := decoder.Decode(user, r.PostForm)
 
 	if derr != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(derr.Error()))
+		return
 	}
 
-	fmt.Println("**************************")
-	fmt.Println(user)
-	fmt.Println(user.Name)
-	fmt.Println(user.Email)
-	fmt.Printf("%+v\n", user)
-	fmt.Println(user.PhoneNumber)
+	jsonUser, jerr := json.Marshal(user)
+  if jerr != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(jerr.Error()))
+    return
+  }
 
+
+	w.Write([]byte(jsonUser))
 }
 
 
