@@ -87,8 +87,13 @@ func CreateUserEndpoint(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(jsonUser))
 }
 
+func IndexEndpoint(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("running app.."))
+}
+
 func main() {
 	router := mux.NewRouter()
+	router.HandleFunc("/", IndexEndpoint).Methods("GET")
 	router.HandleFunc("/users", CreateUserEndpoint).Methods("POST")
 	log.Fatal(http.ListenAndServe(":8000", router))
 }

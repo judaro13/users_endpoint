@@ -17,14 +17,21 @@ var (
 	ErrPublish    = errors.New("failed to publish a message")
 )
 
+func ValidateEnv() error {
+	if len(os.Getenv("RABBIT_PATH")) == 0 {
+		return ErrEnv
+	}
+	if len(os.Getenv("RABBIT_CHANNEL")) == 0 {
+		return ErrEnvChannel
+	}
+	return nil
+}
+
 func SendMessage(msg string) error {
 	rabbit_url := os.Getenv("RABBIT_PATH")
 	rabbit_ch := os.Getenv("RABBIT_CHANNEL")
-	if len(rabbit_url) == 0 {
-		return ErrEnv
-	}
-	if len(rabbit_ch) == 0 {
-		return ErrEnvChannel
+	if val := ValidateEnv(); val != nil {
+		return val
 	}
 
 	conn, err := amqp.Dial(rabbit_url)
