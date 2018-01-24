@@ -9,6 +9,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"github.com/judaro13/users_enpoint/publisher"
+	"github.com/rs/cors"
 )
 
 type User struct {
@@ -95,5 +96,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/", IndexEndpoint).Methods("GET")
 	router.HandleFunc("/users", CreateUserEndpoint).Methods("POST")
-	log.Fatal(http.ListenAndServe(":8000", router))
+
+	handler := cors.Default().Handler(router)
+	log.Fatal(http.ListenAndServe(":8000", handler))
 }
